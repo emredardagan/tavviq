@@ -1,0 +1,315 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7A0000000000000000000020 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0000000000000000000022 /* GoogleMobileAds */; };
+		7A0000000000000000000021 /* GoogleUserMessagingPlatform in Frameworks */ = {isa = PBXBuildFile; productRef = 7A0000000000000000000024 /* GoogleUserMessagingPlatform */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		7A0000000000000000000001 /* Tavviq.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tavviq.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		7A0000000000000000000002 /* Tavviq */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Tavviq;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7A0000000000000000000003 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7A0000000000000000000020 /* GoogleMobileAds in Frameworks */,
+				7A0000000000000000000021 /* GoogleUserMessagingPlatform in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7A0000000000000000000004 = {
+			isa = PBXGroup;
+			children = (
+				7A0000000000000000000002 /* Tavviq */,
+				7A0000000000000000000005 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7A0000000000000000000005 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7A0000000000000000000001 /* Tavviq.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7A0000000000000000000006 /* Tavviq */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7A0000000000000000000007 /* Build configuration list for PBXNativeTarget "Tavviq" */;
+			buildPhases = (
+				7A0000000000000000000008 /* Sources */,
+				7A0000000000000000000003 /* Frameworks */,
+				7A0000000000000000000009 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				7A0000000000000000000002 /* Tavviq */,
+			);
+			name = Tavviq;
+			packageProductDependencies = (
+				7A0000000000000000000022 /* GoogleMobileAds */,
+				7A0000000000000000000024 /* GoogleUserMessagingPlatform */,
+			);
+			productName = Tavviq;
+			productReference = 7A0000000000000000000001 /* Tavviq.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7A000000000000000000000A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2700;
+				LastUpgradeCheck = 2700;
+				TargetAttributes = {
+					7A0000000000000000000006 = {
+						CreatedOnToolsVersion = 27.0;
+					};
+				};
+			};
+			buildConfigurationList = 7A000000000000000000000B /* Build configuration list for PBXProject "Tavviq" */;
+			developmentRegion = tr;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				tr,
+				en,
+				Base,
+			);
+			mainGroup = 7A0000000000000000000004;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				7A0000000000000000000023 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
+				7A0000000000000000000025 /* XCRemoteSwiftPackageReference "swift-package-manager-google-user-messaging-platform" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 7A0000000000000000000005 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7A0000000000000000000006 /* Tavviq */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7A0000000000000000000009 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7A0000000000000000000008 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		7A000000000000000000000C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		7A000000000000000000000D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		7A000000000000000000000E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				GAD_APP_ID = "ca-app-pub-3940256099942544~1458002511";
+				INFOPLIST_FILE = "Tavviq-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Tavviq;
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Bu izin, sana daha ilgili reklamlar göstermemizi sağlar. Tavviq izin versen de vermesen de aynı şekilde çalışır.";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.casual-games";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.emredardagan.tavviq;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		7A000000000000000000000F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				GAD_APP_ID = "ca-app-pub-3940256099942544~1458002511";
+				INFOPLIST_FILE = "Tavviq-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Tavviq;
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "Bu izin, sana daha ilgili reklamlar göstermemizi sağlar. Tavviq izin versen de vermesen de aynı şekilde çalışır.";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.casual-games";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.emredardagan.tavviq;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7A0000000000000000000007 /* Build configuration list for PBXNativeTarget "Tavviq" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7A000000000000000000000E /* Debug */,
+				7A000000000000000000000F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7A000000000000000000000B /* Build configuration list for PBXProject "Tavviq" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7A000000000000000000000C /* Debug */,
+				7A000000000000000000000D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		7A0000000000000000000023 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 13.11.0;
+			};
+		};
+		7A0000000000000000000025 /* XCRemoteSwiftPackageReference "swift-package-manager-google-user-messaging-platform" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7A0000000000000000000022 /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A0000000000000000000023 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
+		};
+		7A0000000000000000000024 /* GoogleUserMessagingPlatform */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7A0000000000000000000025 /* XCRemoteSwiftPackageReference "swift-package-manager-google-user-messaging-platform" */;
+			productName = GoogleUserMessagingPlatform;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 7A000000000000000000000A /* Project object */;
+}
