@@ -177,16 +177,6 @@ struct RootView: View {
         case .newBest:
             mascot.say("REKOR! Gıdaaak!", edge: Bool.random() ? .leading : .trailing, mood: .laugh, hold: 2.0)
         case .died(let kind):
-            if store.runs == 1 {
-                // first finished run: explain, then ask for tracking permission once
-                Task { @MainActor in
-                    try? await Task.sleep(for: .seconds(1.0))
-                    mascot.say("Birazdan reklamlar için bir izin soracağım. Ne seçersen seç, oyun aynı!", edge: .bottom, mood: .wink, hold: 3.2)
-                    try? await Task.sleep(for: .seconds(3.4))
-                    ads.requestTrackingIfNeeded()
-                }
-                return
-            }
             Task { @MainActor in
                 try? await Task.sleep(for: .seconds(0.9))
                 let extra: String
