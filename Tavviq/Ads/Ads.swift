@@ -1,8 +1,6 @@
-import AppTrackingTransparency
 import GoogleMobileAds
 import Observation
 import UIKit
-import UserMessagingPlatform
 
 /// Every AdMob call lives here. Game code only asks "is a rewarded ad ready?",
 /// "show one", and "a run just finished, maybe show an interstitial".
@@ -19,9 +17,8 @@ final class Ads: NSObject {
         static let interstitial = "ca-app-pub-3940256099942544/4411468910"
         static let rewarded = "ca-app-pub-3940256099942544/1712485313"
         #else
-        // TODO: replace with the real ad unit IDs from the AdMob console before release.
-        static let interstitial = "ca-app-pub-3940256099942544/4411468910"
-        static let rewarded = "ca-app-pub-3940256099942544/1712485313"
+        static let interstitial = "ca-app-pub-6833923682836169/3809911087"
+        static let rewarded = "ca-app-pub-6833923682836169/9999914914"
         #endif
     }
 
@@ -35,7 +32,6 @@ final class Ads: NSObject {
     }
 
     private(set) var rewardedReady = false
-    private(set) var privacyOptionsRequired = false
     /// Set by a future "Remove Ads" purchase; turns off interstitials only.
     var adsRemoved = false
 
@@ -51,28 +47,16 @@ final class Ads: NSObject {
 
     // MARK: - Startup
 
-    /// Consent (UMP) first, then the SDK. Safe to call more than once.
+    /// Tavviq is a kids' game: every request is tagged child-directed, so ads are never
+    /// personalised and the IDFA is never used. No consent form or tracking prompt is shown.
+    /// Safe to call more than once.
     @MainActor
     func start() {
-        let params = RequestParameters()
-        params.isTaggedForUnderAgeOfConsent = false
-        ConsentInformation.shared.requestConsentInfoUpdate(with: params) { [weak self] _ in
-            guard let self else { return }
-            ConsentForm.loadAndPresentIfRequired(from: nil) { [weak self] _ in
-                guard let self else { return }
-                self.privacyOptionsRequired = ConsentInformation.shared.privacyOptionsRequirementStatus == .required
-                self.startSDKIfAllowed()
-            }
-        }
-        // Consent from a previous session may already allow ads.
-        startSDKIfAllowed()
-    }
-
-    @MainActor
-    private func startSDKIfAllowed() {
-        guard ConsentInformation.shared.canRequestAds, !started else { return }
+        guard !started else { return }
         started = true
         let config = MobileAds.shared.requestConfiguration
+        config.tagForChildDirectedTreatment = true
+        config.tagForUnderAgeOfConsent = true
         config.maxAdContentRating = .general
         MobileAds.shared.start { [weak self] _ in
             DispatchQueue.main.async {
@@ -80,20 +64,6 @@ final class Ads: NSObject {
                 self?.loadInterstitial()
             }
         }
-    }
-
-    /// App Tracking Transparency, asked once after the first finished run (never at launch).
-    @MainActor
-    func requestTrackingIfNeeded() {
-        guard ATTrackingManager.trackingAuthorizationStatus == .notDetermined else { return }
-        ATTrackingManager.requestTrackingAuthorization { _ in
-            DispatchQueue.main.async { self.loadRewarded(); self.loadInterstitial() }
-        }
-    }
-
-    @MainActor
-    func showPrivacyOptions() {
-        ConsentForm.presentPrivacyOptionsForm(from: Self.topViewController()) { _ in }
     }
 
     // MARK: - Loading

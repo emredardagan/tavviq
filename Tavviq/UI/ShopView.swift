@@ -588,14 +588,6 @@ struct SettingsView: View {
                 toggle("Ses efektleri", icon: "speaker.wave.2.fill", isOn: $store.sfxOn)
                 toggle("Müzik", icon: "music.note", isOn: $store.musicOn)
                 toggle("Titreşim", icon: "iphone.radiowaves.left.and.right", isOn: $store.hapticsOn)
-                if ads.privacyOptionsRequired {
-                    Button { ads.showPrivacyOptions() } label: {
-                        Label("Gizlilik seçenekleri", systemImage: "hand.raised.fill")
-                            .font(Theme.font(17, .heavy))
-                            .frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(ChunkyButtonStyle(color: Theme.paper, dark: Color(hex: 0xd9ccb3), radius: 16, depth: 4))
-                }
                 VStack(spacing: 4) {
                     Text("Tavviq 1.0")
                         .font(Theme.font(15, .heavy))
