@@ -102,6 +102,15 @@ final class GameController: NSObject, SCNSceneRendererDelegate {
     @ObservationIgnored private var lastSafeX: Float = 0
     @ObservationIgnored private var invuln: Float = 0
     @ObservationIgnored private var continued = false
+    #if DEBUG
+    // Marketing capture: `-demo YES` plays by itself; `-demoSeconds N` turns reckless after N s.
+    @ObservationIgnored private let demo = UserDefaults.standard.bool(forKey: "demo")
+    @ObservationIgnored private let demoSeconds = Float(UserDefaults.standard.double(forKey: "demoSeconds"))
+    @ObservationIgnored private var demoWait: Float = 0
+    @ObservationIgnored private var demoClock: Float = 0
+    @ObservationIgnored private var demoStuck: Float = 0
+    @ObservationIgnored private var demoBest = 0
+    #endif
 
     @ObservationIgnored private var lightSun = SIMD4<Float>(1, 1, 1, 1000)
     @ObservationIgnored private var lightAmb = SIMD4<Float>(1, 1, 1, 400)
@@ -360,7 +369,11 @@ final class GameController: NSObject, SCNSceneRendererDelegate {
         updateTrains(dt)
 
         switch state {
-        case .home: updateIdle(dt)
+        case .home:
+            updateIdle(dt)
+            #if DEBUG
+            if demo && idleT > 2.6 { beginRun(); enqueue(.up) }
+            #endif
         case .playing: updatePlayer(dt)
         case .dead: updateDeath(dt)
         case .paused: break
@@ -463,6 +476,9 @@ final class GameController: NSObject, SCNSceneRendererDelegate {
     }
 
     private func updatePlayer(_ dt: Float) {
+        #if DEBUG
+        if demo && hop == nil && queue.isEmpty { demoThink(dt) }
+        #endif
         if hop == nil, !queue.isEmpty {
             startHop(queue.removeFirst())
         }
@@ -520,7 +536,8 @@ final class GameController: NSObject, SCNSceneRendererDelegate {
         if !started { started = true }
 
         let lateral = tLane == lane
-        let onLog = riding != nil && lateral
+        // lily pads are fixed tiles: a sideways hop lands on the next pad (or in the water)
+        let onLog = riding != nil && lateral && !(lanes[lane]?.lily ?? false)
         let targetX: Float = onLog ? px + (d == .left ? -1 : 1) : Float(col)
 
         // blocked: bounds, trees, missing lanes
@@ -691,6 +708,9 @@ final class GameController: NSObject, SCNSceneRendererDelegate {
 
     private func die(_ kind: DeathKind, mover: Mover? = nil, lane l: Lane? = nil) {
         guard state == .playing else { return }
+        #if DEBUG
+        if demo { NSLog("TVQDEMO died %@ lane=%d cam=%.1f t=%.1f", "\(kind)", lane, camLane, demoClock) }
+        #endif
         state = .dead
         deathKind = kind
         deathT = 0
@@ -912,3 +932,134 @@ private func lerpAngle(_ a: Float, _ b: Float, _ t: Float) -> Float {
 }
 
 func + (a: SCNVector3, b: SCNVector3) -> SCNVector3 { SCNVector3(a.x + b.x, a.y + b.y, a.z + b.z) }
+
+#if DEBUG
+// MARK: - Demo bot (marketing captures only)
+
+extension GameController {
+    /// A small look-ahead bot: hops forward when the next lane is safe, waits otherwise,
+    /// steps sideways around trees, toward lily pads and coins, and back off a log near the edge.
+    fileprivate func demoThink(_ dt: Float) {
+        demoClock += dt
+        demoWait -= dt
+        guard demoWait <= 0, let cur = lanes[lane], let next = lanes[lane + 1] else { return }
+        let x = px.rounded()
+        let reckless = demoSeconds > 0 && demoClock > demoSeconds
+
+        func go(_ d: Dir, pause: ClosedRange<Float> = 0.06...0.2) {
+            enqueue(d)
+            demoWait = Float.random(in: pause)
+        }
+        if reckless { go(.up, pause: 0.05...0.1); return }
+
+        // leaving a log that drifts toward the edge
+        if let r = riding, cur.kind == .river, !cur.lily, abs(px) > 3.0 {
+            let d: Dir = px > 0 ? .left : .right
+            let nx = px + (d == .left ? -1 : 1)
+            if abs(nx - r.x) <= r.len / 2 - 0.3 { go(d); return }
+        }
+
+        if safe(next, x: x, from: Self.hopTime, to: Self.hopTime + 0.5) {
+            go(.up)
+            return
+        }
+
+        // the lane we stand on is about to get hit: retreat
+        if cur.kind == .road || cur.kind == .rail, !safe(cur, x: x, from: 0, to: 0.5) {
+            if let back = lanes[lane - 1], back.kind == .grass, Float(lane) > camLane - 6, safe(back, x: x, from: Self.hopTime, to: 0.8) { go(.down); return }
+            for d: Float in [-1, 1] where abs(x + d) <= 4 && safe(cur, x: x + d, from: Self.hopTime, to: 0.8) {
+                go(d < 0 ? .left : .right); return
+            }
+        }
+
+        // static obstacles ahead (trees, missing lily pads): walk sideways on grass
+        if cur.kind == .grass, staticBlock(next, x: x) {
+            var best: Float?
+            for c in -4...4 {
+                let cx = Float(c)
+                if !staticBlock(next, x: cx), reachable(cur, from: x, to: cx), best == nil || abs(cx - x) < abs(best! - x) { best = cx }
+            }
+            if let b = best, b != x { go(b < x ? .left : .right, pause: 0.08...0.18); return }
+        }
+
+        // tree ahead while standing on a road, rail or log: slide one tile toward an open column
+        if cur.kind != .grass, !cur.lily, staticBlock(next, x: x) {
+            let open = (-4...4).map(Float.init).filter { !staticBlock(next, x: $0) }
+            if let target = open.min(by: { abs($0 - x) < abs($1 - x) }) {
+                let d: Float = target < x ? -1 : 1
+                let ok: Bool
+                if let r = riding { ok = abs(px + d - r.x) <= r.len / 2 - 0.3 }
+                else { ok = safe(cur, x: x + d, from: Self.hopTime, to: Self.hopTime + 0.5) }
+                if ok { go(d < 0 ? .left : .right); return }
+            }
+        }
+
+        // on a lily pad facing a blocked tile: hop to a neighbouring pad
+        if cur.kind == .river, cur.lily, staticBlock(next, x: x) {
+            for d: Float in [-1, 1] where cur.pads[Int(x + d)] != nil && !staticBlock(next, x: x + d) {
+                go(d < 0 ? .left : .right); return
+            }
+            for d: Float in [-1, 1] where cur.pads[Int(x + d)] != nil { go(d < 0 ? .left : .right); return }
+        }
+
+        // no way forward for a while: wander (sideways or one step back) and look again
+        if lane > demoBest { demoBest = lane; demoStuck = 0 }
+        demoStuck += 0.03 + max(0, -demoWait)
+        if demoStuck > 2.5, cur.kind == .grass {
+            demoStuck = 0
+            var moves: [Dir] = []
+            for d: Float in [-1, 1] where abs(x + d) <= 4 && !cur.blocked.contains(Int(x + d)) { moves.append(d < 0 ? .left : .right) }
+            if let back = lanes[lane - 1], back.kind == .grass, !back.blocked.contains(Int(x)) { moves.append(.down) }
+            if let m = moves.randomElement() { go(m, pause: 0.15...0.3); return }
+        }
+
+        // grab a coin beside us
+        if cur.kind == .grass {
+            for d: Float in [-1, 1] where abs(x + d) <= 4 {
+                if cur.coins[Int(x + d)] != nil, !cur.blocked.contains(Int(x + d)) { go(d < 0 ? .left : .right); return }
+            }
+        }
+        demoWait = 0.03
+    }
+
+    private func staticBlock(_ l: Lane, x: Float) -> Bool {
+        switch l.kind {
+        case .grass, .forest: return l.blocked.contains(Int(x))
+        case .river: return l.lily && l.pads[Int(x)] == nil
+        default: return false
+        }
+    }
+
+    private func reachable(_ l: Lane, from a: Float, to b: Float) -> Bool {
+        let lo = Int(min(a, b)), hi = Int(max(a, b))
+        return (lo...hi).allSatisfy { !l.blocked.contains($0) }
+    }
+
+    /// Whether standing at `x` in lane `l` is safe for the time window [t0, t1] from now.
+    private func safe(_ l: Lane, x: Float, from t0: Float, to t1: Float) -> Bool {
+        switch l.kind {
+        case .grass, .forest:
+            return !l.blocked.contains(Int(x))
+        case .road:
+            for m in l.movers {
+                for k in 0...8 {
+                    let t = t0 + (t1 - t0) * Float(k) / 8
+                    if abs(m.x + l.velocity * t - x) < m.len / 2 + 0.5 { return false }
+                }
+            }
+            return true
+        case .rail:
+            return l.trainState == .idle && l.trainTimer > t1 + 0.4
+        case .river:
+            for m in l.movers {
+                let land = m.x + l.velocity * t0
+                if abs(x - land) <= m.len / 2 - (l.lily ? 0 : 0.3) {
+                    // and the log must not carry us off-screen too soon
+                    return abs(x + l.velocity * 1.2) < 4.2
+                }
+            }
+            return false
+        }
+    }
+}
+#endif

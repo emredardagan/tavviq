@@ -52,6 +52,10 @@ final class Ads: NSObject {
     /// Safe to call more than once.
     @MainActor
     func start() {
+        #if DEBUG
+        // `-noAds YES`: no ad SDK at all (marketing captures, UI work)
+        if UserDefaults.standard.bool(forKey: "noAds") { return }
+        #endif
         guard !started else { return }
         started = true
         let config = MobileAds.shared.requestConfiguration
