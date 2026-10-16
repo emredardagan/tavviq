@@ -54,6 +54,10 @@ final class Ads: NSObject {
     /// Consent (UMP) first, then the SDK. Safe to call more than once.
     @MainActor
     func start() {
+        #if DEBUG
+        // `-noAds YES`: no consent form, no SDK (marketing captures, UI work)
+        if UserDefaults.standard.bool(forKey: "noAds") { return }
+        #endif
         let params = RequestParameters()
         params.isTaggedForUnderAgeOfConsent = false
         ConsentInformation.shared.requestConsentInfoUpdate(with: params) { [weak self] _ in
@@ -85,6 +89,9 @@ final class Ads: NSObject {
     /// App Tracking Transparency, asked once after the first finished run (never at launch).
     @MainActor
     func requestTrackingIfNeeded() {
+        #if DEBUG
+        if UserDefaults.standard.bool(forKey: "noAds") { return }
+        #endif
         guard ATTrackingManager.trackingAuthorizationStatus == .notDetermined else { return }
         ATTrackingManager.requestTrackingAuthorization { _ in
             DispatchQueue.main.async { self.loadRewarded(); self.loadInterstitial() }
