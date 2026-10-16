@@ -63,7 +63,7 @@ Google Mobile Ads 13.x + User Messaging Platform 3.x, Swift Package Manager ile 
 
 Koşu sırasında asla reklam çıkmaz. Reklam açıkken oyun sesi kısılır. Kurallar `Ads.Rules` içinde.
 
-Açılışta önce UMP onay formu (gerekiyorsa), sonra SDK başlatılır. ATT izni ilk turdan sonra, maskotun kısa açıklamasıyla istenir. AdMob panelinde bir IDFA açıklama mesajı tanımlarsan UMP bunu kendisi gösterir. Ayarlar ekranında, gerekiyorsa "Gizlilik seçenekleri" butonu çıkar.
+Tavviq bir çocuk oyunu: her reklam isteği `tagForChildDirectedTreatment` ve `tagForUnderAgeOfConsent` ile işaretlenir, içerik derecesi G ile sınırlıdır. Kişiselleştirilmiş reklam, IDFA, ATT izni ve UMP onay formu yoktur.
 
 ### Yayından önce
 
