@@ -43,6 +43,13 @@ final class GameStore {
         // launch with `-debugCoins N` to test the shop
         let extra = d.integer(forKey: "debugCoins")
         if extra > 0 { coins = extra }
+        // `-debugOwned "kovboy,horoz"` and `-debugSkin kovboy` for shop screenshots
+        if let list = d.string(forKey: "debugOwned") {
+            owned.formUnion(list.split(separator: ",").map(String.init))
+        }
+        if let s = d.string(forKey: "debugSkin"), Skins.all.contains(where: { $0.id == s }) {
+            owned.insert(s); selected = s
+        }
         #endif
     }
 

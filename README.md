@@ -32,10 +32,17 @@ tools/run_sim.sh <simulator-udid>
 
 - `-debugZone N`: N. biyomdan başla (0 çayır, 1 sonbahar, 2 kar, 3 kumsal, 4 kanyon, 5 neon şehir)
 - `-debugCoins N`: açılışta jeton sayısını N yap (yalnızca DEBUG derleme)
+- `-noAds YES`: reklam ve onay penceresi yok
+- `-demo YES` / `-demoSeconds N`: oyun kendi kendini oynar (görsel ve video çekimi için)
+- `-debugOwned "a,b"` / `-debugSkin id`: kostümleri aç / seç
 
 ```bash
 xcrun simctl launch booted com.emredardagan.tavviq -debugZone 5 -debugCoins 1000
 ```
+
+## App Store görselleri
+
+Ekran görüntüleri ve önizleme videosu [marketing/app-store](marketing/app-store) altında; nasıl üretildikleri oradaki README'de.
 
 ## Sesleri yeniden üretmek
 
