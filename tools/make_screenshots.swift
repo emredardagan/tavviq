@@ -34,7 +34,7 @@ let slides: [Slide] = [
           en: ("Beat your best\nwith Gıdık!", "How far can you hop?")),
 ]
 
-let sizes: [(name: String, w: Int, h: Int)] = [("6.9", 1320, 2868), ("6.5", 1284, 2778)]
+let sizes: [(name: String, w: Int, h: Int)] = [("6.9", 1320, 2868), ("6.5", 1284, 2778), ("6.3", 1206, 2622)]
 let ink = NSColor(srgbRed: 0x3a / 255, green: 0x26 / 255, blue: 0x18 / 255, alpha: 1)
 
 func color(_ hex: UInt32) -> NSColor {
